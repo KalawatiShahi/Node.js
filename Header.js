@@ -7,6 +7,17 @@ const PORT = 8000;
 // middleware- plugin
 app.use(express.urlencoded({extended: false}));
 
+app.use((req, res, next)=>{
+fs.appendFile("log.txt", `\n${Date.now()}: ${req.method}: ${req.path}`, (err, data)=>{
+  next();
+})
+
+})
+app.use((req, res, next)=>{
+    console.log("Hello from middleware");
+    next();
+})
+
 app.get("/users", (req, res)=>{
     const html = `
     <ul>
@@ -16,7 +27,9 @@ app.get("/users", (req, res)=>{
     res.send(html)
 });
 
+//   header 
 app.get("/api/users", (req, res)=>{
+    res.setHeader("x-myName", "Kalawti Shahi");
     return res.json(users);
 });
 //API route
