@@ -1,51 +1,41 @@
-const fs = require('fs');
+const http = require("http");
+const fs = require("fs");
+const url = require("url");
 
 
-// fs.writeFileSync("example.txt", "Hello there");
-// console.log("file create");
-
-// fs.writeFile("example.txt", "Hello async", (err)=>{
-//     console.log("File Created");
-// });
-
-// const data = fs.readFileSync("example.txt",  "utf-8");
-// console.log(data);
-
-
-
-// fs.readFile("contacts.txt","utf-8", (err, data)=>{
-//     if(err){
-//         console.log("Error");
-//     }else{
-//         console.log(data);
-//     }
-// })
-
-// const data = fs.readFileSync("./contacts.txt", "utf-8");
-//   console.log(data);
-
-
-// fs.appendFile("test.txt" , "hey there\n", (err)=>{
-//     if(err){
-//         console.log("Error")
-//     }else{
-//         console.log("Data Append")
-//     }
-// });
-   
-
-// fs.rename("example.txt", "newname", (error)=>{
-//     if(error){
-//     console.log("Error");
-//     }else{
-//     console.log("Rename File");
-//     }
-// })
-
-fs.unlink("newname", (error)=>{
-    if(error){
-        conole.log("Error");
-    }else{
-        console.log("Delete file");
+const myServer = http.createServer((req, res)=>{
+    if(req.url === "/faviconico") return res.end();
+    const log = `Hello there:${req.method} ${req.url} New Req Received!\n` 
+    const myUrl = url.parse(req.url, true);
+    console.log(myUrl);
+    fs.appendFile("log.txt", log ,(err, data)=>{
+    
+       switch(myUrl.pathname){
+        case '/': if(req.method === "GET")
+        res.end("home page");
+        break;
+        case '/about': 
+        const username = myUrl.query.myname;
+        res.end(`hello ${username}`);
+        break;
+        case '/search':
+        const search = myUrl.query.search_query;
+        res.end("Here are your Result for: " + search); 
+        break;
+        case '/signup': if(req.method === "GET")
+        res.end("This is you Sign up form");
+        
+        else if(req.method === "POST"){
+            //database s
+            res.end("Successfull");
+        }
+        
+        default: 
+        res.end("404 not found");
     }
-})
+    });
+   
+});
+
+myServer.listen(3000,()=>console.log("Server Start"));
+
