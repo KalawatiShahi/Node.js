@@ -42,11 +42,11 @@ app.route("/api/user/:id").get((req, res)=>{
 .patch((req, res)=> {
     // Edit user with id
     
-    return res.json({status: "Panding"});
+    return res.json({status: "Pending"});
 })
 .delete((req, res)=>{
     // delete user id
-     return res.json({status: "Panding"});
+     return res.json({status: "Pending"});
 });
 
 app.post("/api/users",(req, res)=>{
